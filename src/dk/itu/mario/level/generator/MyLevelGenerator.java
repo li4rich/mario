@@ -21,5 +21,8 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+    
+    public float FitnessTest(Gameplay metrics, LevelInterface level) {
+        //TODO: implement fitness algorithm to evaluate levels fitness based on playerMetrics
+    }
 }
