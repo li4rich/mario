@@ -652,10 +652,12 @@ public class MyLevel extends Level{
     
     public Level mutate() {
         //TODO: implement mutate
+        return null;
     }
     
-    public Level breedWith(Level parent2)) {
+    public Level breedWith(Level parent2) {
         Level parent1 = this;
         //TODO: implement crossbreed
+        return null;
     }
 }
