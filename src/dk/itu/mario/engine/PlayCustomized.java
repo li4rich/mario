@@ -8,8 +8,15 @@ public class PlayCustomized {
 
 	public static void main(String[] args)
      {
+
+     			String txtFileToUse = "player.txt";
+
+     			if (args.length!=0){
+     				txtFileToUse = args[0]+".txt";
+     			}
+
 		    	JFrame frame = new JFrame("Mario Experience Showcase");
-		    	MarioComponent mario = new MarioComponent(640, 480,true);
+		    	MarioComponent mario = new MarioComponent(640, 480,true, txtFileToUse);
 
 		    	frame.setContentPane(mario);
 		    	frame.setResizable(false);
