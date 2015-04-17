@@ -1,6 +1,7 @@
 package dk.itu.mario.level;
 
 import java.util.Random;
+import java.util.ArrayList;
 
 import dk.itu.mario.MarioInterface.Constraints;
 import dk.itu.mario.MarioInterface.GamePlay;
@@ -11,12 +12,12 @@ import dk.itu.mario.engine.sprites.Enemy;
 
 public class MyLevel extends Level{
 	//Store information about the level
-	 public   int ENEMIES = 0; //the number of enemies the level contains
-	 public   int BLOCKS_EMPTY = 0; // the number of empty blocks
-	 public   int BLOCKS_COINS = 0; // the number of coin blocks
-	 public   int BLOCKS_POWER = 0; // the number of power blocks
-	 public   int COINS = 0; //These are the coins in boxes that Mario collect
-
+	public   int ENEMIES = 0; //the number of enemies the level contains
+	public   int BLOCKS_EMPTY = 0; // the number of empty blocks
+	public   int BLOCKS_COINS = 0; // the number of coin blocks
+	public   int BLOCKS_POWER = 0; // the number of power blocks
+	public   int COINS = 0; //These are the coins in boxes that Mario collect
+    public ArrayList<Integer> intMap = new ArrayList<Integer>();
  
 	private static Random levelSeedRandom = new Random();
     public static long lastSeed;
@@ -56,11 +57,11 @@ public class MyLevel extends Level{
         while (length < width - 64)
         {
             //length += buildZone(length, width - length);
-            //length += buildStraight(length, width-length, false);
-            //length += buildStraight(length, width-length, false);
-            //length += buildHillStraight(length, width-length);
-            //length += buildJump(length, width-length);
-            //length += buildTubes(length, width-length);
+            length += buildStraight(length, width-length, false);
+            length += buildStraight(length, width-length, false);
+            length += buildHillStraight(length, width-length);
+            length += buildJump(length, width-length);
+            length += buildTubes(length, width-length);
             length += buildCannons(length, width-length);
         }
 

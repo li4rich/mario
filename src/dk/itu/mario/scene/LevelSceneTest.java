@@ -40,6 +40,9 @@ import dk.itu.mario.res.ResourcesManager;
 			private boolean isCustom;
 
 			private String txtFileToUse = "player.txt";
+			private String txtFileToUse1 = "collector.txt";
+			private String txtFileToUse2 = "jumper.txt";
+			private String txtFileToUse3 = "hunter.txt";
 
 
 			public LevelSceneTest(GraphicsConfiguration graphicsConfiguration,
@@ -71,8 +74,14 @@ import dk.itu.mario.res.ResourcesManager;
 		        	if(isCustom){
 		        		MyLevelGenerator clg = new MyLevelGenerator();
 		        		GamePlay gp = new GamePlay();
+		        		GamePlay gp1 = new GamePlay();
+		        		GamePlay gp2 = new GamePlay();
+		        		GamePlay gp3 = new GamePlay();
 		        		gp = gp.read(txtFileToUse);
-		        		currentLevel = (Level)clg.generateLevel(gp);
+		        		gp1 = gp1.read(txtFileToUse1);
+		        		gp2 = gp2.read(txtFileToUse2);
+		        		gp3 = gp3.read(txtFileToUse3);
+		        		currentLevel = (Level)clg.generateLevel(gp,gp1,gp2,gp3);
 		        		
 		        		//You can use the following commands if you want to benefit from
 		        		//	the interface containing detailed information
