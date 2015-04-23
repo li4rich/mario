@@ -24,10 +24,10 @@ public class MyLevel extends Level{
 
     Random random;
 
-
+    private int floor;
     private int difficulty;
     private int type;
-    private int gaps;
+    public int gaps;
     
     public MyLevel(int width, int height)
     {
@@ -38,6 +38,7 @@ public class MyLevel extends Level{
     public MyLevel(int width, int height, long seed, int difficulty, int type, GamePlay playerMetrics)
     {
         this(width, height);
+        floor = height - 5;
         creat(seed, difficulty, type);
     }
 
@@ -56,17 +57,18 @@ public class MyLevel extends Level{
         //create all of the medium sections
         while (length < width - 64)
         {
-            //length += buildZone(length, width - length);
+            //length += buildZone(length, width - length); //commented out in orig code
             length += buildStraight(length, width-length, false);
+            length += buildStairs(length, width-length);
             length += buildStraight(length, width-length, false);
-            length += buildHillStraight(length, width-length);
-            length += buildJump(length, width-length);
-            length += buildTubes(length, width-length);
-            length += buildCannons(length, width-length);
+            // length += buildHillStraight(length, width-length);
+            // length += buildJump(length, width-length);
+            // length += buildTubes(length, width-length);
+            // length += buildCannons(length, width-length);
         }
 
         //set the end piece
-        int floor = height - 1 - random.nextInt(4);
+        //int floor = height - 1 - random.nextInt(4);
 
         xExit = length + 8;
         yExit = floor;
@@ -117,9 +119,9 @@ public class MyLevel extends Level{
         int jl = random.nextInt(2) + 2;
         int length = js * 2 + jl;
 
-        boolean hasStairs = random.nextInt(3) == 0;
+        //boolean hasStairs = random.nextInt(3) == 0;
 
-        int floor = height - 1 - random.nextInt(4);
+        //int floor = height - 1 - random.nextInt(4);
       //run from the start x position, for the whole length
         for (int x = xo; x < xo + length; x++)
         {
@@ -132,29 +134,61 @@ public class MyLevel extends Level{
                     {
                         setBlock(x, y, GROUND);
                     }
-                  //if it is above ground, start making stairs of rocks
-                    else if (hasStairs)
-                    {	//LEFT SIDE
-                        if (x < xo + js)
+                  // //if it is above ground, start making stairs of rocks
+                  //   else if (hasStairs)
+                  //   {	//LEFT SIDE
+                  //       if (x < xo + js)
+                  //       { //we need to max it out and level because it wont
+                  //         //paint ground correctly unless two bricks are side by side
+                  //           if (y >= floor - (x - xo) + 1)
+                  //           {
+                  //               setBlock(x, y, ROCK);
+                  //           }
+                  //       }
+                  //       else
+                  //       { //RIGHT SIDE
+                  //           if (y >= floor - ((xo + length) - x) + 2)
+                  //           {
+                  //               setBlock(x, y, ROCK);
+                  //           }
+                  //       }
+                  //   }
+                }
+            }
+        }
+
+        return length;
+    }
+
+    private int buildStairs(int xo, int maxLength){
+        gaps++;
+        //jl: jump length
+        //js: the number of blocks that are available at either side for free
+        int js = random.nextInt(4) + 2;
+        int jl = random.nextInt(2) + 2;
+        int length = js * 2 + jl;
+       // int floor = height - 1 - random.nextInt(4);
+        for (int x = xo; x < xo + length; x++){
+            if (x < xo + js || x > xo + length - js - 1){
+                for (int y = 0; y < height; y++){
+                    if (x < xo + js)
                         { //we need to max it out and level because it wont
                           //paint ground correctly unless two bricks are side by side
-                            if (y >= floor - (x - xo) + 1)
+                            if (y >= floor - (x - xo) )
                             {
                                 setBlock(x, y, ROCK);
                             }
                         }
                         else
                         { //RIGHT SIDE
-                            if (y >= floor - ((xo + length) - x) + 2)
+                            if (y >= floor - ((xo + length) - x) + 1)
                             {
                                 setBlock(x, y, ROCK);
                             }
                         }
-                    }
                 }
             }
         }
-
         return length;
     }
 
@@ -163,7 +197,7 @@ public class MyLevel extends Level{
         int length = random.nextInt(10) + 2;
         if (length > maxLength) length = maxLength;
 
-        int floor = height - 1 - random.nextInt(4);
+       // int floor = height - 1 - random.nextInt(4);
         int xCannon = xo + 1 + random.nextInt(4);
         for (int x = xo; x < xo + length; x++)
         {
@@ -209,7 +243,7 @@ public class MyLevel extends Level{
         int length = random.nextInt(10) + 10;
         if (length > maxLength) length = maxLength;
 
-        int floor = height - 1 - random.nextInt(4);
+        //int floor = height - 1 - random.nextInt(4);
         for (int x = xo; x < xo + length; x++)
         {
             for (int y = 0; y < height; y++)
@@ -311,7 +345,7 @@ public class MyLevel extends Level{
         int length = random.nextInt(10) + 5;
         if (length > maxLength) length = maxLength;
 
-        int floor = height - 1 - random.nextInt(4);
+        // int floor = height - 1 - random.nextInt(4);
         int xTube = xo + 1 + random.nextInt(4);
         int tubeHeight = floor - random.nextInt(2) - 2;
         for (int x = xo; x < xo + length; x++)
@@ -363,14 +397,14 @@ public class MyLevel extends Level{
     private int buildStraight(int xo, int maxLength, boolean safe)
     {
         int length = random.nextInt(10) + 2;
-
+        //floor--;
         if (safe)
             length = 10 + random.nextInt(5);
 
         if (length > maxLength)
             length = maxLength;
 
-        int floor = height - 1 - random.nextInt(4);
+        // int floor = height - 1 - random.nextInt(4);
 
         //runs from the specified x position to the length of the segment
         for (int x = xo; x < xo + length; x++)
@@ -395,22 +429,22 @@ public class MyLevel extends Level{
         return length;
     }
 
-    private void decorate(int xStart, int xLength, int floor)
+    private void decorate(int xStart, int xLength, int floord)
     {
         //if its at the very top, just return
-        if (floor < 1)
+        if (floord < 1)
             return;
 
         //        boolean coins = random.nextInt(3) == 0;
         boolean rocks = true;
 
         //add an enemy line above the box
-        addEnemyLine(xStart + 1, xLength - 1, floor - 1);
+        addEnemyLine(xStart + 1, xLength - 1, floord - 1);
 
         int s = random.nextInt(4);
         int e = random.nextInt(4);
 
-        if (floor - 2 > 0){
+        if (floord - 2 > 0){
             if ((xLength - 1 - e) - (xStart + 1 + s) > 1){
                 for(int x = xStart + 1 + s; x < xLength - 1 - e; x++){
                     setBlock(x, floor - 2, COIN);
@@ -423,7 +457,7 @@ public class MyLevel extends Level{
         e = random.nextInt(4);
         
         //this fills the set of blocks and the hidden objects inside them
-        if (floor - 4 > 0)
+        if (floord - 4 > 0)
         {
             if ((xLength - 1 - e) - (xStart + 1 + s) > 2)
             {
