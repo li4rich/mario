@@ -11,12 +11,90 @@ import dk.itu.mario.level.MyLevel;
 
 public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelGenerator{
 
+    public static int GENERATION_LIMIT = 100;
+
 	public LevelInterface generateLevel(GamePlay playerMetrics) {
-		System.out.println("----GENERATING----");
-		LevelInterface level = new MyLevel(320,15,new Random().nextLong(),1,LevelInterface.TYPE_OVERGROUND,playerMetrics);
-		System.out.println(FitnessTest(playerMetrics,(MyLevel)level));
-		return level;
+    
+        // Initialization
+        System.out.println("\n~~~~~~~~Creating Adam, Eve, and Steve~~~~~~~~\n");
+        MyLevel[] levelPool = new MyLevel[20];
+        float[] fit = new float[20];
+        for (int i = 0; i < levelPool.length; i++) {
+            levelPool[i] = new MyLevel(320,15,new Random().nextLong(),1,LevelInterface.TYPE_OVERGROUND,playerMetrics);
+        }
+        
+        // Generational loop
+        System.out.println("\n~~~~~~~~Fast Forwading Millenia~~~~~~~~\n");
+        for (int i = 0; i < GENERATION_LIMIT; i++) {
+            // TODO: change this to use a heap for run time/clarity (?)
+            for (int l = 0; l < levelPool.length; l++) {
+                fit[l] = FitnessTest(playerMetrics, levelPool[l]);
+            }
+            int[] top10index = new int[10];
+            for (int j = 0; j < top10index.length; j++) {
+                float max = fit[0];
+                int index = 0;
+                for (int k = 0; k < fit.length; k++) {
+                    if (fit[k] > max) {
+                        max = fit[k];
+                        index = k;
+                    }
+                }
+                fit[index] = 0;
+                top10index[j] = index;
+            }
+            
+            for (int j = 0; j < top10index.length; j++) {
+                levelPool[j] = levelPool[top10index[j]];
+            }
+            
+            // Reproduce
+            for (int j = 0; j < 5; j++) {
+                levelPool[10+j*2] = this.generateBoy(levelPool[2*j], levelPool[2*j+1]);
+                levelPool[11+j*2] = this.generateGirl(levelPool[2*j], levelPool[2*j+1]);
+            }
+            
+            
+            // Mutations
+            for (int j = 0; j < 10; j++) {
+                levelPool[j] = this.mutate(levelPool[j]);
+            }
+        }
+        
+        // Selecting best level
+        System.out.println("~~~~~~~~Selecting Apex~~~~~~~~");
+        for (int l = 0; l < levelPool.length; l++) {
+                fit[l] = FitnessTest(playerMetrics, levelPool[l]);
+        }
+        float max = fit[0];
+        MyLevel result = levelPool[0];
+        for (int k = 0; k < fit.length; k++) {
+            if (fit[k] > max) {
+                max = fit[k];
+                result = levelPool[k];
+            }
+        }
+        
+		//LevelInterface level = new MyLevel(320,15,new Random().nextLong(),1,LevelInterface.TYPE_OVERGROUND,playerMetrics);
+		//System.out.println(FitnessTest(playerMetrics,(MyLevel)level));
+		return result;
 	}
+    
+    public MyLevel generateBoy(MyLevel level1, MyLevel level2) {
+        // TODO: implement generateBoy
+        return level1;
+    }
+    
+    public MyLevel generateGirl(MyLevel level1, MyLevel level2) {
+        // TODO: implement generateGirl
+        return level1;
+    }
+    
+    public MyLevel mutate(MyLevel level) {
+        // TODO: implement mutate
+        return level;
+    }
+    
 	public LevelInterface generateLevel(GamePlay playerMetrics,GamePlay playerMetrics1,GamePlay playerMetrics2,GamePlay playerMetrics3){
 		LevelInterface level = generateLevel(playerMetrics);		
 		System.out.println(FitnessTest(playerMetrics1,(MyLevel)level));
@@ -26,6 +104,7 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 		//System.exit(0);
 		return level;
 	}
+    
 
 	@Override
 	public LevelInterface generateLevel(String detailedInfo) {
