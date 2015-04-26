@@ -133,6 +133,10 @@ public class MyLevel extends Level{
     
     // Recreates level represented by the given intMap
     public void reconstruct(ArrayList<Integer> iM) {
+        map = new byte[width][height];
+        spriteTemplates = new SpriteTemplate[width][height];
+        
+        
         // Reset level info
         this.ENEMIES = 0;
         this.BLOCKS_EMPTY = 0;
@@ -147,30 +151,32 @@ public class MyLevel extends Level{
 
         //create all of the medium sections
         for (int i : intMap) {
-            switch(i) {
-                case 0:
-                    length += buildStraight(length, width-length, false);
-                    break;                
-                case 1:
-                    length += buildStairs(length, width-length);
-                    break;                
-                case 2:
-                    length += buildStraight(length, width-length, false);
-                    break;                
-                case 3:
-                    length += buildHillStraight(length, width-length);
-                    break;           
-                case 4:
-                    length += buildJump(length, width-length);
-                    break;                
-                case 5:
-                    length += buildTubes(length, width-length);
-                    break;                
-                case 6:
-                    length += buildCannons(length, width-length);
-                    break;
-                default:
-                    break;
+            if (length < width - 64) {
+                switch(i) {
+                    case 0:
+                        length += buildStraight(length, width-length, false);
+                        break;                
+                    case 1:
+                        length += buildStairs(length, width-length);
+                        break;                
+                    case 2:
+                        length += buildStraight(length, width-length, false);
+                        break;                
+                    case 3:
+                        length += buildHillStraight(length, width-length);
+                        break;           
+                    case 4:
+                        length += buildJump(length, width-length);
+                        break;                
+                    case 5:
+                        length += buildTubes(length, width-length);
+                        break;                
+                    case 6:
+                        length += buildCannons(length, width-length);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     
@@ -840,7 +846,7 @@ public class MyLevel extends Level{
         result.intMap = this.intMap;
         
         for (int i = 0; i < parent2.intMap.size()/2; i++) {
-            result.intMap.set(i*2, parent2.intMap.get(i*2));
+            result.intMap.set(Math.min(i*2, result.intMap.size()-1), parent2.intMap.get(i*2));
         }
         result.reconstruct(result.intMap);
         

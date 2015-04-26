@@ -16,6 +16,7 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 	public LevelInterface generateLevel(GamePlay playerMetrics) {
     
         // Initialization
+        System.out.println("hello");
         System.out.println("\n*Creating Adam, Eve, and Steve*\n");
         MyLevel[] levelPool = new MyLevel[20];
         float[] fit = new float[20];
@@ -85,12 +86,10 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
     }
     
     public MyLevel generateGirl(MyLevel level1, MyLevel level2) {
-        // TODO: implement generateGirl
         return level2.breedWith(level1);
     }
     
     public MyLevel mutate(MyLevel level) {
-        // TODO: implement mutate
         return level.mutate();
     }
     
