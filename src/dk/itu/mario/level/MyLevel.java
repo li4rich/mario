@@ -426,7 +426,7 @@ public class MyLevel extends Level{
             }
         }
 
-        return length;
+                return length;
     }
 
     private void decorate(int xStart, int xLength, int floord)
@@ -498,6 +498,38 @@ public class MyLevel extends Level{
                 }
             }
         }
+    }
+
+    private void makePowerBlocks(int x){
+        setBlock(x++, floor - 4, BLOCK_COIN);
+        BLOCKS_COINS++;
+        setBlock(x++, floor - 4, BLOCK_COIN);
+        BLOCKS_COINS++;
+        setBlock(x++, floor - 4, BLOCK_COIN);
+        BLOCKS_COINS++;
+        setBlock(x++, floor - 4, BLOCK_POWERUP);
+        BLOCKS_POWER++;
+    }
+    private void makeEmptyBlocks(int x){
+        setBlock(x, floor - 4, BLOCK_EMPTY);
+        BLOCKS_EMPTY++;
+        setBlock(x, floor - 4, BLOCK_EMPTY);
+        BLOCKS_EMPTY++;
+        setBlock(x, floor - 4, BLOCK_EMPTY);
+        BLOCKS_EMPTY++;
+        setBlock(x, floor - 4, BLOCK_EMPTY);
+        BLOCKS_EMPTY++;
+    }
+
+    private void makeCoinBlocks(int x){
+        setBlock(x++, floor - 4, BLOCK_COIN);
+        BLOCKS_COINS++;
+        setBlock(x++, floor - 4, BLOCK_COIN);
+        BLOCKS_COINS++;
+        setBlock(x++, floor - 4, BLOCK_COIN);
+        BLOCKS_COINS++;
+        setBlock(x++, floor - 4, BLOCK_COIN);
+        BLOCKS_COINS++;
     }
 
     private void fixWalls()
