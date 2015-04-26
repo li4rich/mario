@@ -28,6 +28,7 @@ public class MyLevel extends Level{
     private int difficulty;
     private int type;
     public int gaps;
+    public GamePlay playerMetrics;
     
     public MyLevel(int width, int height)
     {
@@ -39,6 +40,7 @@ public class MyLevel extends Level{
     {
         this(width, height);
         floor = height - 5;
+        this.playerMetrics = playerMetrics;
         creat(seed, difficulty, type);
     }
 
@@ -816,14 +818,32 @@ public class MyLevel extends Level{
 
     }
     
+    // Returns a new mutated level, this level remains intact
     public MyLevel mutate() {
-        //TODO: implement mutate
-        return this;
+        MyLevel result = new MyLevel(this.width, this.height, this.lastSeed, this.difficulty, this.type, this.playerMetrics);
+        result.intMap = this.intMap;
+    
+        Random rand = new Random();
+        int MUTATION_AMOUNT = rand.nextInt(5);
+        
+        for (int i = 0; i < MUTATION_AMOUNT; i++) {
+            // Mutate a random block to another random type of block
+            result.intMap.set(rand.nextInt(intMap.size()), rand.nextInt(7));
+        }
+        result.reconstruct(result.intMap);
+        return result;
     }
     
     public MyLevel breedWith(MyLevel parent2) {
         MyLevel parent1 = this;
-        //TODO: implement crossbreed
-        return parent1;
+        MyLevel result = new MyLevel(this.width, this.height, this.lastSeed, this.difficulty, this.type, this.playerMetrics);
+        result.intMap = this.intMap;
+        
+        for (int i = 0; i < parent2.intMap.size()/2; i++) {
+            result.intMap.set(i*2, parent2.intMap.get(i*2));
+        }
+        result.reconstruct(result.intMap);
+        
+        return result;
     }
 }
