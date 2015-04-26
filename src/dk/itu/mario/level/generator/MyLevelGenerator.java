@@ -120,6 +120,7 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 		double pCBD = metrics.percentageCoinBlocksDestroyed; //percentage of coin blocks destroyed
 		double pEBD = metrics.percentageEmptyBlockesDestroyed; //percentage of empty blocks destroyed
 		double pPBD = metrics.percentagePowerBlockDestroyed; //percentage of power blocks destroyed
+        int jumps = metrics.jumpsNumber;
 
 		double pCoins = ((double)metrics.coinsCollected)/metrics.totalCoins;
 
@@ -138,6 +139,7 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 		value += pPBD*level.BLOCKS_POWER;
 		value += pCoins*level.COINS;
 		value += pKilled*level.ENEMIES;
+        value += jumps*level.gaps;
 
         return value;
     }
