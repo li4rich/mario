@@ -16,7 +16,7 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 	public LevelInterface generateLevel(GamePlay playerMetrics) {
     
         // Initialization
-        System.out.println("\n~~~~~~~~Creating Adam, Eve, and Steve~~~~~~~~\n");
+        System.out.println("\n*Creating Adam, Eve, and Steve*\n");
         MyLevel[] levelPool = new MyLevel[20];
         float[] fit = new float[20];
         for (int i = 0; i < levelPool.length; i++) {
@@ -24,7 +24,7 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
         }
         
         // Generational loop
-        System.out.println("\n~~~~~~~~Fast Forwading Millenia~~~~~~~~\n");
+        System.out.println("\n*Fast Forwading Millenia*\n");
         for (int i = 0; i < GENERATION_LIMIT; i++) {
             // TODO: change this to use a heap for run time/clarity (?)
             for (int l = 0; l < levelPool.length; l++) {
@@ -62,7 +62,7 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
         }
         
         // Selecting best level
-        System.out.println("~~~~~~~~Selecting Apex~~~~~~~~");
+        System.out.println("*Selecting Apex*");
         for (int l = 0; l < levelPool.length; l++) {
                 fit[l] = FitnessTest(playerMetrics, levelPool[l]);
         }
@@ -81,18 +81,17 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 	}
     
     public MyLevel generateBoy(MyLevel level1, MyLevel level2) {
-        // TODO: implement generateBoy
-        return level1;
+        return level1.breedWith(level2);
     }
     
     public MyLevel generateGirl(MyLevel level1, MyLevel level2) {
         // TODO: implement generateGirl
-        return level1;
+        return level2.breedWith(level1);
     }
     
     public MyLevel mutate(MyLevel level) {
         // TODO: implement mutate
-        return level;
+        return level.mutate();
     }
     
 	public LevelInterface generateLevel(GamePlay playerMetrics,GamePlay playerMetrics1,GamePlay playerMetrics2,GamePlay playerMetrics3){

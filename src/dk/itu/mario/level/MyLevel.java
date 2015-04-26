@@ -57,14 +57,33 @@ public class MyLevel extends Level{
         //create all of the medium sections
         while (length < width - 64)
         {
-            //length += buildZone(length, width - length); //commented out in orig code
-            length += buildStraight(length, width-length, false);
-            length += buildStairs(length, width-length);
-            length += buildStraight(length, width-length, false);
-            // length += buildHillStraight(length, width-length);
-            // length += buildJump(length, width-length);
-            // length += buildTubes(length, width-length);
-            // length += buildCannons(length, width-length);
+            int r = random.nextInt(7);
+            switch(r) {               
+                case 0:
+                    length += buildStraight(length, width-length, false);
+                    break;                
+                case 1:
+                    length += buildStairs(length, width-length);
+                    break;                
+                case 2:
+                    length += buildStraight(length, width-length, false);
+                    break;                
+                case 3:
+                    length += buildHillStraight(length, width-length);
+                    break;
+                case 4:
+                    length += buildJump(length, width-length);
+                    break;                
+                case 5:
+                    length += buildTubes(length, width-length);
+                    break;                
+                case 6:
+                    length += buildCannons(length, width-length);
+                    break;
+                default:
+                    break;
+            }
+            intMap.add(r);
         }
 
         //set the end piece
@@ -109,6 +128,88 @@ public class MyLevel extends Level{
         fixWalls();
 
     }
+    
+    // Recreates level represented by the given intMap
+    public void reconstruct(ArrayList<Integer> iM) {
+    // Reset level info
+    this.ENEMIES = 0;
+	this.BLOCKS_EMPTY = 0;
+	this.BLOCKS_COINS = 0;
+	this.BLOCKS_POWER = 0;
+	this.COINS = 0;
+    
+    
+    this.intMap = iM;
+    int length = 0;
+    length += buildStraight(0, width, true);
+
+    //create all of the medium sections
+    for (int i : intMap) {
+        switch(i) {
+            case 0:
+                length += buildStraight(length, width-length, false);
+                break;                
+            case 1:
+                length += buildStairs(length, width-length);
+                break;                
+            case 2:
+                length += buildStraight(length, width-length, false);
+                break;                
+            case 3:
+                length += buildHillStraight(length, width-length);
+                break;           
+            case 4:
+                length += buildJump(length, width-length);
+                break;                
+            case 5:
+                length += buildTubes(length, width-length);
+                break;                
+            case 6:
+                length += buildCannons(length, width-length);
+                break;
+            default:
+                break;
+        }
+    }
+    
+    xExit = length + 8;
+    yExit = floor;
+
+    // fills the end piece
+    for (int x = length; x < width; x++)
+    {
+        for (int y = 0; y < height; y++)
+        {
+            if (y >= floor)
+            {
+                setBlock(x, y, GROUND);
+            }
+        }
+    }
+
+    if (type == LevelInterface.TYPE_CASTLE || type == LevelInterface.TYPE_UNDERGROUND)
+    {
+        int ceiling = 0;
+        int run = 0;
+        for (int x = 0; x < width; x++)
+        {
+            if (run-- <= 0 && x > 4)
+            {
+                ceiling = random.nextInt(4);
+                run = random.nextInt(4) + 4;
+            }
+            for (int y = 0; y < height; y++)
+            {
+                if ((x > 4 && y <= ceiling) || x < 1)
+                {
+                    setBlock(x, y, GROUND);
+                }
+            }
+        }
+    }
+
+    fixWalls();
+}
 
 
     private int buildJump(int xo, int maxLength)
@@ -717,14 +818,14 @@ public class MyLevel extends Level{
 
     }
     
-    public Level mutate() {
+    public MyLevel mutate() {
         //TODO: implement mutate
-        return null;
+        return this;
     }
     
-    public Level breedWith(Level parent2) {
-        Level parent1 = this;
+    public MyLevel breedWith(MyLevel parent2) {
+        MyLevel parent1 = this;
         //TODO: implement crossbreed
-        return null;
+        return parent1;
     }
 }
