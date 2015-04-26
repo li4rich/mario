@@ -131,85 +131,83 @@ public class MyLevel extends Level{
     
     // Recreates level represented by the given intMap
     public void reconstruct(ArrayList<Integer> iM) {
-    // Reset level info
-    this.ENEMIES = 0;
-	this.BLOCKS_EMPTY = 0;
-	this.BLOCKS_COINS = 0;
-	this.BLOCKS_POWER = 0;
-	this.COINS = 0;
-    
-    
-    this.intMap = iM;
-    int length = 0;
-    length += buildStraight(0, width, true);
+        // Reset level info
+        this.ENEMIES = 0;
+        this.BLOCKS_EMPTY = 0;
+        this.BLOCKS_COINS = 0;
+        this.BLOCKS_POWER = 0;
+        this.COINS = 0;
+        
+        
+        this.intMap = iM;
+        int length = 0;
+        length += buildStraight(0, width, true);
 
-    //create all of the medium sections
-    for (int i : intMap) {
-        switch(i) {
-            case 0:
-                length += buildStraight(length, width-length, false);
-                break;                
-            case 1:
-                length += buildStairs(length, width-length);
-                break;                
-            case 2:
-                length += buildStraight(length, width-length, false);
-                break;                
-            case 3:
-                length += buildHillStraight(length, width-length);
-                break;           
-            case 4:
-                length += buildJump(length, width-length);
-                break;                
-            case 5:
-                length += buildTubes(length, width-length);
-                break;                
-            case 6:
-                length += buildCannons(length, width-length);
-                break;
-            default:
-                break;
-        }
-    }
-    
-    xExit = length + 8;
-    yExit = floor;
-
-    // fills the end piece
-    for (int x = length; x < width; x++)
-    {
-        for (int y = 0; y < height; y++)
-        {
-            if (y >= floor)
-            {
-                setBlock(x, y, GROUND);
+        //create all of the medium sections
+        for (int i : intMap) {
+            switch(i) {
+                case 0:
+                    length += buildStraight(length, width-length, false);
+                    break;                
+                case 1:
+                    length += buildStairs(length, width-length);
+                    break;                
+                case 2:
+                    length += buildStraight(length, width-length, false);
+                    break;                
+                case 3:
+                    length += buildHillStraight(length, width-length);
+                    break;           
+                case 4:
+                    length += buildJump(length, width-length);
+                    break;                
+                case 5:
+                    length += buildTubes(length, width-length);
+                    break;                
+                case 6:
+                    length += buildCannons(length, width-length);
+                    break;
+                default:
+                    break;
             }
         }
-    }
+    
+        xExit = length + 8;
+        yExit = floor;
 
-    if (type == LevelInterface.TYPE_CASTLE || type == LevelInterface.TYPE_UNDERGROUND)
-    {
-        int ceiling = 0;
-        int run = 0;
-        for (int x = 0; x < width; x++)
+        // fills the end piece
+        for (int x = length; x < width; x++)
         {
-            if (run-- <= 0 && x > 4)
-            {
-                ceiling = random.nextInt(4);
-                run = random.nextInt(4) + 4;
-            }
             for (int y = 0; y < height; y++)
             {
-                if ((x > 4 && y <= ceiling) || x < 1)
+                if (y >= floor)
                 {
                     setBlock(x, y, GROUND);
                 }
             }
         }
+        if (type == LevelInterface.TYPE_CASTLE || type == LevelInterface.TYPE_UNDERGROUND)
+        {
+            int ceiling = 0;
+            int run = 0;
+            for (int x = 0; x < width; x++)
+            {
+                if (run-- <= 0 && x > 4)
+                {
+                    ceiling = random.nextInt(4);
+                    run = random.nextInt(4) + 4;
+                }
+                for (int y = 0; y < height; y++)
+                {
+                    if ((x > 4 && y <= ceiling) || x < 1)
+                    {
+                        setBlock(x, y, GROUND);
+                    }
+                }
+            }
+        }
+        fixWalls();
     }
-
-    fixWalls();
-}
 
 
     private int buildJump(int xo, int maxLength)
