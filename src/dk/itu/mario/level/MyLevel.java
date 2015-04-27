@@ -39,9 +39,9 @@ public class MyLevel extends Level{
     public MyLevel(int width, int height, long seed, int difficulty, int type, GamePlay playerMetrics)
     {
         this(width, height);
-        floor = height - 5;
+        floor = height - 3;
         this.playerMetrics = playerMetrics;
-        creat(seed, difficulty, type);
+                creat(seed, difficulty, type);
     }
 
     public void creat(long seed, int difficulty, int type)
@@ -59,7 +59,7 @@ public class MyLevel extends Level{
         //create all of the medium sections
         while (length < width - 64)
         {
-            int r = random.nextInt(7);
+            int r = random.nextInt(12);
             switch(r) {               
                 case 0:
                     length += buildStraight(length, width-length, false);
@@ -81,6 +81,21 @@ public class MyLevel extends Level{
                     break;                
                 case 6:
                     length += buildCannons(length, width-length);
+                    break;
+                case 7:
+                    length += buildStraightPower(length, width-length);
+                    break;
+                case 8:
+                    length += buildStraightEmpty(length, width-length);
+                    break;
+                case 9:
+                    length += buildStraightCoins(length, width-length);
+                    break;
+                case 10:
+                    length += buildStraightCoinBlocks(length, width-length);
+                    break;
+                case 11:
+                    length += buildStraightLotsaCoins(length, width-length);
                     break;
                 default:
                     break;
@@ -127,7 +142,7 @@ public class MyLevel extends Level{
             }
         }
 
-        fixWalls();
+                fixWalls();
 
     }
     
@@ -165,7 +180,7 @@ public class MyLevel extends Level{
                         break;                
                     case 3:
                         length += buildHillStraight(length, width-length);
-                        break;           
+                        break;
                     case 4:
                         length += buildJump(length, width-length);
                         break;                
@@ -175,9 +190,24 @@ public class MyLevel extends Level{
                     case 6:
                         length += buildCannons(length, width-length);
                         break;
+                    case 7:
+                        length += buildStraightPower(length, width-length);
+                        break;
+                    case 8:
+                        length += buildStraightEmpty(length, width-length);
+                        break;
+                    case 9:
+                        length += buildStraightCoins(length, width-length);
+                        break;
+                    case 10:
+                        length += buildStraightCoinBlocks(length, width-length);
+                        break;
+                    case 11:
+                        length += buildStraightLotsaCoins(length, width-length);
+                        break;
                     default:
                         break;
-                }
+                    }
             }
         }
     
@@ -215,7 +245,7 @@ public class MyLevel extends Level{
                 }
             }
         }
-        fixWalls();
+                fixWalls();
     }
 
 
@@ -537,12 +567,10 @@ public class MyLevel extends Level{
                 return length;
     }
 
-    private int buildStraightPower(int xo, int maxLength, boolean safe)
+    private int buildStraightPower(int xo, int maxLength)
     {
-        int length = random.nextInt(10) + 2;
+        int length = random.nextInt(3) + 5;
         //floor--;
-        if (safe)
-            length = 10 + random.nextInt(5);
 
         if (length > maxLength)
             length = maxLength;
@@ -563,15 +591,12 @@ public class MyLevel extends Level{
 
         makePowerBlocks(xo);
 
-                return length;
+                    return length;
     }
 
-     private int buildStraightEmpty(int xo, int maxLength, boolean safe)
+    private int buildStraightEmpty(int xo, int maxLength)
     {
-        int length = random.nextInt(10) + 2;
-        //floor--;
-        if (safe)
-            length = 10 + random.nextInt(5);
+        int length = random.nextInt(3) + 5;
 
         if (length > maxLength)
             length = maxLength;
@@ -592,7 +617,84 @@ public class MyLevel extends Level{
 
         makeEmptyBlocks(xo);
 
+                        return length;
+    }
+
+    private int buildStraightCoinBlocks(int xo, int maxLength)
+    {
+        int length = random.nextInt(3) + 5;
+
+        if (length > maxLength)
+            length = maxLength;
+
+        // int floor = height - 1 - random.nextInt(4);
+
+        //runs from the specified x position to the length of the segment
+        for (int x = xo; x < xo + length; x++)
+        {       
+            for (int y = 0; y < height; y++)
+            {
+                if (y >= floor)
+                {
+                    setBlock(x, y, GROUND);
+                }
+            }
+        }
+
+        makeCoinBlocks(xo);
+
                 return length;
+    }
+    private int buildStraightCoins(int xo, int maxLength)
+    {
+        int length = random.nextInt(3) + 5;
+
+        if (length > maxLength)
+            length = maxLength;
+
+        // int floor = height - 1 - random.nextInt(4);
+
+        //runs from the specified x position to the length of the segment
+        for (int x = xo; x < xo + length; x++)
+        {       
+            for (int y = 0; y < height; y++)
+            {
+                if (y >= floor)
+                {
+                    setBlock(x, y, GROUND);
+                }
+            }
+        }
+
+        makeCoins(xo);
+
+        return length;
+    }
+
+    private int buildStraightLotsaCoins(int xo, int maxLength)
+    {
+        int length = random.nextInt(3) + 5;
+
+        if (length > maxLength)
+            length = maxLength;
+
+        // int floor = height - 1 - random.nextInt(4);
+
+        //runs from the specified x position to the length of the segment
+        for (int x = xo; x < xo + length; x++)
+        {       
+            for (int y = 0; y < height; y++)
+            {
+                if (y >= floor)
+                {
+                    setBlock(x, y, GROUND);
+                }
+            }
+        }
+
+        makeLotsaCoins(xo);
+
+        return length;
     }
 
     private void decorate(int xStart, int xLength, int floord)
@@ -667,6 +769,8 @@ public class MyLevel extends Level{
     }
 
     private void makePowerBlocks(int x){
+        if (floor < 5)
+            return;
         setBlock(x++, floor - 4, BLOCK_COIN);
         BLOCKS_COINS++;
         setBlock(x++, floor - 4, BLOCK_COIN);
@@ -674,20 +778,24 @@ public class MyLevel extends Level{
         setBlock(x++, floor - 4, BLOCK_COIN);
         BLOCKS_COINS++;
         setBlock(x++, floor - 4, BLOCK_POWERUP);
-        BLOCKS_POWER++;
+                        BLOCKS_POWER++;
     }
     private void makeEmptyBlocks(int x){
-        setBlock(x, floor - 4, BLOCK_EMPTY);
+        if (floor < 5)
+            return;
+        setBlock(x++, floor - 4, BLOCK_EMPTY);
         BLOCKS_EMPTY++;
-        setBlock(x, floor - 4, BLOCK_EMPTY);
+        setBlock(x++, floor - 4, BLOCK_EMPTY);
         BLOCKS_EMPTY++;
-        setBlock(x, floor - 4, BLOCK_EMPTY);
+        setBlock(x++, floor - 4, BLOCK_EMPTY);
         BLOCKS_EMPTY++;
-        setBlock(x, floor - 4, BLOCK_EMPTY);
-        BLOCKS_EMPTY++;
+        setBlock(x++, floor - 4, BLOCK_EMPTY);
+                        BLOCKS_EMPTY++;
     }
 
     private void makeCoinBlocks(int x){
+        if (floor < 5)
+            return;
         setBlock(x++, floor - 4, BLOCK_COIN);
         BLOCKS_COINS++;
         setBlock(x++, floor - 4, BLOCK_COIN);
@@ -695,7 +803,32 @@ public class MyLevel extends Level{
         setBlock(x++, floor - 4, BLOCK_COIN);
         BLOCKS_COINS++;
         setBlock(x++, floor - 4, BLOCK_COIN);
-        BLOCKS_COINS++;
+                        BLOCKS_COINS++;
+    }
+
+    private void makeCoins(int x){
+        if (floor < 3)
+            return;
+        setBlock(x++, floor - 2, COIN);
+        COINS++;
+        setBlock(x++, floor - 2, COIN);
+        COINS++;
+        setBlock(x++, floor - 2, COIN);
+        COINS++;
+        setBlock(x++, floor - 2, COIN);
+        COINS++;
+    }
+
+    private void makeLotsaCoins(int x){
+        if (floor < 6)
+            return;
+
+        for (int i = x; i<x+6;i++){
+            for (int j = 0; j<4;j++){
+                setBlock(i, floor - 1-j, COIN);
+                COINS++;
+            }
+        }
     }
 
     private void fixWalls()

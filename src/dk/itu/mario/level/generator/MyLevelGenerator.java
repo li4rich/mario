@@ -19,7 +19,7 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
         // Initialization
         System.out.println("\n*Creating Adam, Eve, and Steve*\n");
         MyLevel[] levelPool = new MyLevel[POOL_SIZE];
-        float[] fit = new float[POOL_SIZE];
+        double[] fit = new double[POOL_SIZE];
         for (int i = 0; i < levelPool.length; i++) {
             levelPool[i] = new MyLevel(320,15,new Random().nextLong(),1,LevelInterface.TYPE_OVERGROUND,playerMetrics);
         }
@@ -34,7 +34,7 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
             
             int[] top100index = new int[100];
             for (int j = 0; j < top100index.length; j++) {
-                float max = fit[0];
+                double max = fit[0];
                 int index = 0;
                 for (int k = 0; k < fit.length; k++) {
                     if (fit[k] > max) {
@@ -68,7 +68,7 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
         for (int l = 0; l < levelPool.length; l++) {
                 fit[l] = FitnessTest(playerMetrics, levelPool[l]);
         }
-        float max = fit[0];
+        double max = fit[0];
         MyLevel result = levelPool[0];
         for (int k = 0; k < fit.length; k++) {
             if (fit[k] > max) {
@@ -112,10 +112,10 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 		return null;
 	}
     
-    public float FitnessTest(GamePlay metrics, MyLevel level) {
+    public double FitnessTest(GamePlay metrics, MyLevel level) {
         //TODO: implement fitness algorithm to evaluate levels fitness based on playerMetrics
 
-        float value=0;
+        double value=0;
 
         double pBD = metrics.percentageBlocksDestroyed; //percentage of all blocks destroyed
 		double pCBD = metrics.percentageCoinBlocksDestroyed; //percentage of coin blocks destroyed
@@ -138,7 +138,7 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 		value += pBD*blocks;
 		value += pCBD*level.BLOCKS_COINS;
 		value += pPBD*level.BLOCKS_POWER;
-		value += pCoins*level.COINS;
+		value += pCoins*level.COINS*1000;
 		value += pKilled*level.ENEMIES;
         value += jumps*level.gaps;
 
