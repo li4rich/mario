@@ -138,7 +138,7 @@ public class MyLevel extends Level{
         
         
         // Reset level info
-        this.ENEMIES = 1;
+        this.ENEMIES = 0;
         this.BLOCKS_EMPTY = 0;
         this.BLOCKS_COINS = 0;
         this.BLOCKS_POWER = 0;
