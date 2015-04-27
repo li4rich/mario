@@ -132,6 +132,7 @@ public class MyLevel extends Level{
     }
     
     // Recreates level represented by the given intMap
+
     public void reconstruct(ArrayList<Integer> iM) {
         map = new byte[width][height];
         spriteTemplates = new SpriteTemplate[width][height];
@@ -532,6 +533,64 @@ public class MyLevel extends Level{
                 decorate(xo, xo + length, floor);
             }
         }
+
+                return length;
+    }
+
+    private int buildStraightPower(int xo, int maxLength, boolean safe)
+    {
+        int length = random.nextInt(10) + 2;
+        //floor--;
+        if (safe)
+            length = 10 + random.nextInt(5);
+
+        if (length > maxLength)
+            length = maxLength;
+
+        // int floor = height - 1 - random.nextInt(4);
+
+        //runs from the specified x position to the length of the segment
+        for (int x = xo; x < xo + length; x++)
+        {       
+            for (int y = 0; y < height; y++)
+            {
+                if (y >= floor)
+                {
+                    setBlock(x, y, GROUND);
+                }
+            }
+        }
+
+        makePowerBlocks(xo);
+
+                return length;
+    }
+
+     private int buildStraightEmpty(int xo, int maxLength, boolean safe)
+    {
+        int length = random.nextInt(10) + 2;
+        //floor--;
+        if (safe)
+            length = 10 + random.nextInt(5);
+
+        if (length > maxLength)
+            length = maxLength;
+
+        // int floor = height - 1 - random.nextInt(4);
+
+        //runs from the specified x position to the length of the segment
+        for (int x = xo; x < xo + length; x++)
+        {       
+            for (int y = 0; y < height; y++)
+            {
+                if (y >= floor)
+                {
+                    setBlock(x, y, GROUND);
+                }
+            }
+        }
+
+        makeEmptyBlocks(xo);
 
                 return length;
     }
