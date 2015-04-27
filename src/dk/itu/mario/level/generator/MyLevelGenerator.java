@@ -12,14 +12,14 @@ import dk.itu.mario.level.MyLevel;
 public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelGenerator{
 
     public static int GENERATION_LIMIT = 100;
+    public static int POOL_SIZE = 2000;
 
 	public LevelInterface generateLevel(GamePlay playerMetrics) {
     
         // Initialization
-        System.out.println("hello");
         System.out.println("\n*Creating Adam, Eve, and Steve*\n");
-        MyLevel[] levelPool = new MyLevel[20];
-        float[] fit = new float[20];
+        MyLevel[] levelPool = new MyLevel[POOL_SIZE];
+        float[] fit = new float[POOL_SIZE];
         for (int i = 0; i < levelPool.length; i++) {
             levelPool[i] = new MyLevel(320,15,new Random().nextLong(),1,LevelInterface.TYPE_OVERGROUND,playerMetrics);
         }
@@ -31,8 +31,9 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
             for (int l = 0; l < levelPool.length; l++) {
                 fit[l] = FitnessTest(playerMetrics, levelPool[l]);
             }
-            int[] top10index = new int[10];
-            for (int j = 0; j < top10index.length; j++) {
+            
+            int[] top100index = new int[100];
+            for (int j = 0; j < top100index.length; j++) {
                 float max = fit[0];
                 int index = 0;
                 for (int k = 0; k < fit.length; k++) {
@@ -42,23 +43,23 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
                     }
                 }
                 fit[index] = 0;
-                top10index[j] = index;
+                top100index[j] = index;
             }
-            
-            for (int j = 0; j < top10index.length; j++) {
-                levelPool[j] = levelPool[top10index[j]];
+            for (int j = 0; j < top100index.length; j++) {
+                levelPool[j] = levelPool[top100index[j]];
             }
-            
             // Reproduce
-            for (int j = 0; j < 5; j++) {
-                levelPool[10+j*2] = this.generateBoy(levelPool[2*j], levelPool[2*j+1]);
-                levelPool[11+j*2] = this.generateGirl(levelPool[2*j], levelPool[2*j+1]);
+            Random rand = new Random();
+            for (int j = 0; j < 850; j++) {
+                levelPool[100+j*2] = this.generateBoy(levelPool[rand.nextInt(100)], levelPool[rand.nextInt(100)]);
+                levelPool[101+j*2] = this.generateGirl(levelPool[rand.nextInt(100)], levelPool[rand.nextInt(100)]);
             }
-            
             
             // Mutations
-            for (int j = 0; j < 10; j++) {
-                levelPool[j] = this.mutate(levelPool[j]);
+            for (int j = 0; j < 1900; j++) {
+                if (rand.nextFloat() > .9) {
+                    levelPool[100+j] = this.mutate(levelPool[100+j]);
+                }
             }
         }
         
