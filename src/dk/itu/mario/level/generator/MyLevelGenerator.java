@@ -100,6 +100,7 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 		System.out.println(FitnessTest(playerMetrics2,(MyLevel)level));
 		System.out.println(FitnessTest(playerMetrics3,(MyLevel)level));
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        
 		//System.exit(0);
 		return level;
 	}
@@ -138,9 +139,9 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 		value += pBD*blocks;
 		value += pCBD*level.BLOCKS_COINS;
 		value += pPBD*level.BLOCKS_POWER;
-		value += pCoins*level.COINS*1000;
-		value += pKilled*level.ENEMIES;
-        value += jumps*level.gaps;
+		value += pCoins*(level.COINS+level.BLOCKS_COINS)*2;
+		value += pKilled*level.ENEMIES*45;
+        value += jumps*level.gaps*.8;
 
         return value;
     }

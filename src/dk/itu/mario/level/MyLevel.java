@@ -59,7 +59,7 @@ public class MyLevel extends Level{
         //create all of the medium sections
         while (length < width - 64)
         {
-            int r = random.nextInt(12);
+            int r = random.nextInt(13);
             switch(r) {               
                 case 0:
                     length += buildStraight(length, width-length, false);
@@ -96,6 +96,9 @@ public class MyLevel extends Level{
                     break;
                 case 11:
                     length += buildStraightLotsaCoins(length, width-length);
+                    break;
+                case 12:
+                    length += buildStraightEnemy(length, width-length);
                     break;
                 default:
                     break;
@@ -204,6 +207,9 @@ public class MyLevel extends Level{
                         break;
                     case 11:
                         length += buildStraightLotsaCoins(length, width-length);
+                        break;
+                    case 12:
+                        length += buildStraightEnemy(length, width-length);
                         break;
                     default:
                         break;
@@ -478,6 +484,15 @@ public class MyLevel extends Level{
         }
     }
 
+    private void addEnemyLineConsis(int x0)
+    {
+        for (int x = x0; x < x0+5; x++)
+        {
+                setSpriteTemplate(x, floor-1, new SpriteTemplate(random.nextInt(3), random.nextInt(10) < difficulty));
+                ENEMIES++;
+        }
+    }
+
     private int buildTubes(int xo, int maxLength)
     {
         int length = random.nextInt(10) + 5;
@@ -560,7 +575,7 @@ public class MyLevel extends Level{
         {
             if (length > 5)
             {
-                decorate(xo, xo + length, floor);
+                //decorate(xo, xo + length, floor);
             }
         }
 
@@ -667,6 +682,32 @@ public class MyLevel extends Level{
         }
 
         makeCoins(xo);
+
+        return length;
+    }
+
+    private int buildStraightEnemy(int xo, int maxLength)
+    {
+        int length = random.nextInt(3) + 5;
+
+        if (length > maxLength)
+            length = maxLength;
+
+        // int floor = height - 1 - random.nextInt(4);
+
+        //runs from the specified x position to the length of the segment
+        for (int x = xo; x < xo + length; x++)
+        {       
+            for (int y = 0; y < height; y++)
+            {
+                if (y >= floor)
+                {
+                    setBlock(x, y, GROUND);
+                }
+            }
+        }
+
+        addEnemyLineConsis(xo);
 
         return length;
     }
